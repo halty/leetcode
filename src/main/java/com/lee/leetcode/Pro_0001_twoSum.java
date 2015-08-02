@@ -2,7 +2,7 @@ package com.lee.leetcode;
 
 import java.util.Arrays;
 
-public class Pro_1_twoSum {
+public class Pro_0001_twoSum {
 
 	public static void main(String[] args) {
 		int[] array = {0, 4, 3, 0};

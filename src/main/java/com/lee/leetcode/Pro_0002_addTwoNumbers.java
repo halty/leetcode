@@ -1,6 +1,6 @@
 package com.lee.leetcode;
 
-public class Pro_2_addTwoNumbers {
+public class Pro_0002_addTwoNumbers {
 
 	public static void main(String[] args) {
 		ListNode l1 = createList(new int[]{2, 4, 3});
