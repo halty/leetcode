@@ -2,7 +2,7 @@ package com.lee.leetcode;
 
 import java.util.Arrays;
 
-public class Pro_0005_longestPalindromicSubstring {
+public class Pro_0005_longestPalindromicSubstring_ {
 
 	public static void main(String[] args) {
 		String s = "aaaa";
