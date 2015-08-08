@@ -3,17 +3,15 @@ package com.lee.leetcode;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Queue;
 import java.util.Set;
+import java.util.Map.Entry;
 
-public class Pro_0010_regularExpressionMatching {
+public class MainTest {
 
 	public static void main(String[] args) {
-		String s = "aa";
-		String p = ".*";
+		String s = "aab";
+		String p = "c*a*b";
 		System.err.println(isMatch(s, p));
 	}
 
@@ -46,10 +44,10 @@ public class Pro_0010_regularExpressionMatching {
 	 * 
 	 */
 	public static boolean isMatch(String s, String p) {
-        return new StateGraph(p).match(s);
+        return new Pattern(p).match(s);
     }
 	
-	static class StateGraph {
+	static class Pattern {
 		static final char WILDCARD = '.';
 		static final int DEF_EDGE_NUM = 4;
 		static final Character NULL_EDGE = null;
@@ -58,11 +56,11 @@ public class Pro_0010_regularExpressionMatching {
 		private State start = new State("S", DEF_EDGE_NUM, false);
 		private Set<State> validStates;
 		
-		StateGraph(String p) {
+		public static Pattern compile(String p) { return new Pattern(p); }
+		
+		private Pattern(String p) {
 			buildGraph(p);
-			System.out.println("plain: \n"+this);
 			removeNullEdges();
-			System.out.println("after adjusted: \n"+this);
 		}
 		
 		private void buildGraph(String p) {
@@ -140,7 +138,7 @@ public class Pro_0010_regularExpressionMatching {
 			}
 		}
 		
-		boolean match(String s) {
+		public boolean match(String s) {
 			State e = start;
 			int len = s.length();
 			for(int i=0; i<len; i++) {
@@ -156,47 +154,6 @@ public class Pro_0010_regularExpressionMatching {
 				e = n;
 			}
 			return e != null && e.isEnd;
-		}
-		
-		public String toString() {
-			Set<State> visited = new HashSet<State>();
-			Queue<State> needVisiting = new LinkedList<State>();
-			needVisiting.offer(start);
-			StringBuilder buf = new StringBuilder(32);
-			State s = null;
-			buf.append("state - relationship - graph: \n");
-			while((s = needVisiting.poll()) != null) {
-				if(visited.contains(s)) { continue; }
-				buf.append("{").append(s.id);
-				if(s.isEnd) { buf.append("(E)"); }
-				if(!s.edges.isEmpty()) {
-					buf.append(" : ");
-					for(Entry<Character, State> entry : s.edges.entrySet()) {
-						Character ch = entry.getKey();
-						State e = entry.getValue();
-						if(ch == null) {
-							buf.append("--->");
-						}else {
-							buf.append("->(").append(ch).append(")->");
-						}
-						buf.append(e.id).append(", ");
-						needVisiting.offer(e);
-					}
-					buf.setLength(buf.length()-2);
-				}
-				buf.append("}\n");
-				visited.add(s);
-			}
-			buf.append("valid state: \n");
-			buf.append("{");
-			if(!validStates.isEmpty()) {
-				for(State e : validStates) {
-					buf.append(e.id).append(", ");
-				}
-				buf.setLength(buf.length()-2);
-			}
-			buf.append("}\n");
-			return buf.toString();
 		}
 	}
 	
@@ -216,4 +173,5 @@ public class Pro_0010_regularExpressionMatching {
 		State removeEdge(Character edgeChar) { return edges.remove(edgeChar); }
 		void markAsEndState() { isEnd = true; }
 	}
+
 }
