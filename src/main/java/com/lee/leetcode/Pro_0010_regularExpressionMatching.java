@@ -1,19 +1,19 @@
 package com.lee.leetcode;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
 public class Pro_0010_regularExpressionMatching {
 
 	public static void main(String[] args) {
-		String s = "aa";
-		String p = ".*";
+		String s = "a";
+		String p = "a*a";
 		System.err.println(isMatch(s, p));
 	}
 
@@ -46,31 +46,32 @@ public class Pro_0010_regularExpressionMatching {
 	 * 
 	 */
 	public static boolean isMatch(String s, String p) {
-        return new StateGraph(p).match(s);
+		return Pattern.compile(p).match(s);
     }
 	
-	static class StateGraph {
-		static final char WILDCARD = '.';
+	static class Pattern {
 		static final int DEF_EDGE_NUM = 4;
-		static final Character NULL_EDGE = null;
-		static final State END = new State("E", 0, true);
+		static final State END = new State(State.END, 0, true);
 		
-		private State start = new State("S", DEF_EDGE_NUM, false);
+		public static Pattern compile(String p) { return new Pattern(p); }
+		
+		private State start = new State(State.START, DEF_EDGE_NUM, false);
 		private Set<State> validStates;
 		
-		StateGraph(String p) {
-			buildGraph(p);
+		private Pattern(String p) {
+			buildStateGraph(p);
 			System.out.println("plain: \n"+this);
+			copyNullReachedEdges();
 			removeNullEdges();
 			System.out.println("after adjusted: \n"+this);
 		}
 		
-		private void buildGraph(String p) {
+		private void buildStateGraph(String p) {
 			int i = 0, len = p.length();
 			validStates = new HashSet<State>(len, 1);
 			validStates.add(start);
 			State prev = start;
-			int id = 1;
+			int id = 1;		// state node id begin with 1
 			while(i<len) {
 				char first = p.charAt(i);
 				if(i+1 < len) {
@@ -80,8 +81,8 @@ public class Pro_0010_regularExpressionMatching {
 						State e = new State(id++, DEF_EDGE_NUM);
 						prev.addEdge(first, s);
 						s.addEdge(first, s);
-						s.addEdge(NULL_EDGE, e);
-						prev.addEdge(NULL_EDGE, e);
+						s.addEdge(Edge.NULL_EDGE, e);
+						prev.addEdge(Edge.NULL_EDGE, e);
 						validStates.add(s);
 						prev = e;
 					}else {
@@ -102,85 +103,50 @@ public class Pro_0010_regularExpressionMatching {
 					i += 1;
 				}
 			}
-			prev.addEdge(NULL_EDGE, END);
+			prev.addEdge(Edge.NULL_EDGE, END);
 		}
 		
-		private void removeNullEdges() {
+		private void copyNullReachedEdges() {
 			Set<State> reachedSet = new HashSet<State>(validStates.size());
 			for(State s : validStates) {
 				reachedSet.clear();				
-				collectNullReachedState(s, reachedSet);
+				s.collectNullReachedState(reachedSet);
 				for(State r : reachedSet) {
-					for(Entry<Character, State> entry : r.edges.entrySet()) {
-						if(entry.getKey() != NULL_EDGE) {
-							s.addEdge(entry.getKey(), entry.getValue());
-						}
+					for(Edge e : r.edgeList) {
+						if(e.ch != Edge.NULL_EDGE) { s.addEdge(e.ch, e.target); }
 					}
-				}
-			}
-			
-			// remove null edges
-			for(State s : validStates) {
-				State e = s.removeEdge(NULL_EDGE);
-				while(e != null) {
-					if(e == END) {
-						s.markAsEndState();
-						break;
-					}
-					e = e.edges.get(NULL_EDGE);
 				}
 			}
 		}
 		
-		private void collectNullReachedState(State source, Set<State> reachedSet) {
-			State e = source.edges.get(NULL_EDGE);
-			while(e != null) {
-				reachedSet.add(e);
-				e = e.edges.get(NULL_EDGE);
-			}
+		private void removeNullEdges() {
+			for(State s : validStates) { s.removeNullEdges(); }
 		}
 		
 		boolean match(String s) {
-			State e = start;
-			int len = s.length();
-			for(int i=0; i<len; i++) {
-				char ch = s.charAt(i);
-				State n = e.edges.get(ch);
-				if(n == null) {
-					n = e.edges.get(WILDCARD);
-					if(n == null) {
-						e = n;
-						break;
-					}
-				}
-				e = n;
-			}
-			return e != null && e.isEnd;
+			return start.match(s, 0);
 		}
 		
 		public String toString() {
 			Set<State> visited = new HashSet<State>();
 			Queue<State> needVisiting = new LinkedList<State>();
 			needVisiting.offer(start);
-			StringBuilder buf = new StringBuilder(32);
+			StringBuilder buf = new StringBuilder(64);
 			State s = null;
 			buf.append("state - relationship - graph: \n");
 			while((s = needVisiting.poll()) != null) {
 				if(visited.contains(s)) { continue; }
-				buf.append("{").append(s.id);
-				if(s.isEnd) { buf.append("(E)"); }
-				if(!s.edges.isEmpty()) {
+				buf.append("{").append(s.id());
+				if(!s.edgeList.isEmpty()) {
 					buf.append(" : ");
-					for(Entry<Character, State> entry : s.edges.entrySet()) {
-						Character ch = entry.getKey();
-						State e = entry.getValue();
-						if(ch == null) {
+					for(Edge e : s.edgeList) {
+						if(e.ch == Edge.NULL_EDGE) {
 							buf.append("--->");
 						}else {
-							buf.append("->(").append(ch).append(")->");
+							buf.append("->(").append(e.ch).append(")->");
 						}
-						buf.append(e.id).append(", ");
-						needVisiting.offer(e);
+						buf.append(e.target.id()).append(", ");
+						needVisiting.offer(e.target);
 					}
 					buf.setLength(buf.length()-2);
 				}
@@ -191,7 +157,7 @@ public class Pro_0010_regularExpressionMatching {
 			buf.append("{");
 			if(!validStates.isEmpty()) {
 				for(State e : validStates) {
-					buf.append(e.id).append(", ");
+					buf.append(e.id()).append(", ");
 				}
 				buf.setLength(buf.length()-2);
 			}
@@ -201,19 +167,72 @@ public class Pro_0010_regularExpressionMatching {
 	}
 	
 	static class State {
-		boolean  isEnd;
-		String id;
-		Map<Character, State> edges = Collections.emptyMap();
-		State(int id, int edgeNum) { this(String.valueOf(id), edgeNum, false); }
-		State(String id, int edgeNum, boolean isEnd) {
-			this.id = id;
+		static final int INVLID_ID = 0;
+		static final int START = -1;
+		static final int END = -2;
+		
+		boolean isEnd;
+		int id;
+		List<Edge> edgeList = Collections.emptyList();
+		
+		State(int id, int edgeNum) { this(id, edgeNum, false); }
+		State(int id, int edgeNum, boolean isEnd) {
 			this.isEnd = isEnd;
-			if(edgeNum > 0) { edges = new HashMap<Character, State>(edgeNum, 1); }
+			this.id = id;
+			if(edgeNum > 0) { edgeList = new ArrayList<Edge>(edgeNum); }
 		}
-		void addEdge(Character edgeChar, State targetState) {
-			edges.put(edgeChar, targetState);
-		}
-		State removeEdge(Character edgeChar) { return edges.remove(edgeChar); }
 		void markAsEndState() { isEnd = true; }
+		String id() {return id==START ? "S" : id==END ? "E" : String.valueOf(id)+(isEnd ? "[E]":""); }
+		void addEdge(Character edgeChar, State targetState) {
+			edgeList.add(new Edge(edgeChar, targetState));
+		}
+		void collectNullReachedState(Set<State> reachedSet) {
+			for(Edge e : edgeList) {
+				if(e.ch == Edge.NULL_EDGE) {
+					reachedSet.add(e.target);
+					e.target.collectNullReachedState(reachedSet);
+				}
+			}
+		}
+		void removeNullEdges() {
+			Iterator<Edge> iter = edgeList.iterator();
+			while(iter.hasNext()) {
+				Edge e = iter.next();
+				if(e.ch == Edge.NULL_EDGE) {
+					iter.remove();
+					if(e.target.canNullReachEnd()) { markAsEndState(); }
+				}
+			}
+		}
+		private boolean canNullReachEnd() {
+			if(isEnd) { return true; }
+			for(Edge e : edgeList) {
+				if(e.ch == Edge.NULL_EDGE && e.target.canNullReachEnd()) { return true; }
+			}
+			return false;
+		}
+		/** don't need (NFA -> DFA) conversation **/
+		boolean match(String s, int index) {
+			if(index == s.length()) { return isEnd; }
+			char ch = s.charAt(index);
+			for(Edge e : edgeList) {
+				if((e.ch == ch || e.ch == Edge.WILDCARD)
+					&& e.target.match(s, index+1)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	static class Edge {
+		static final Character NULL_EDGE = null;
+		static final Character WILDCARD = '.';
+		Character ch;
+		State target;
+		Edge(Character ch, State target) {
+			this.ch = ch;
+			this.target = target;
+		}
 	}
 }
