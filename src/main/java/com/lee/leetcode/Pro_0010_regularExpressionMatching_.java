@@ -9,13 +9,42 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-public class Pro_0010_regularExpressionMatching {
+public class Pro_0010_regularExpressionMatching_ {
 
 	public static void main(String[] args) {
-		String s = "a";
-		String p = "a*a";
-		System.err.println(isMatch(s, p));
+		String s = "aaa";
+		String p = ".*a";
+		System.err.println(isMatch2(s, p));
 	}
+	
+	/** DP **/
+	public static boolean isMatch2(String s, String p) {
+		 int pLen = p.length();
+		 int sLen = s.length();
+		 if(pLen == 0) { return sLen == 0; }
+		 boolean[] match = new boolean[sLen+1];
+		 match[sLen] = true;
+		 for(int i=pLen-1; i>=0; i--) {
+			 char pch = p.charAt(i);
+			 if(pch == '*') {
+				 char ch = p.charAt(i-1);
+				 for(int j=sLen-1; j>=0; j--) {
+					 match[j] = match[j] || match[j+1] && (ch == '.' || ch == s.charAt(j));
+				 }
+				 i--;
+			 }else {
+				 for(int j=0; j<sLen; j++) {	// 基于前一次p[i+1]的扫描结果进行匹配，故FOR循环顺序必须从小到大
+					 match[j] = match[j+1] && (pch == '.' || pch == s.charAt(j));
+				 }
+				 match[sLen] = false;
+			 }
+		 }
+		 return match[0];
+    }
+	
+	public static boolean isMatch1(String s, String p) {
+        return java.util.regex.Pattern.matches(p, s);
+    }
 
 	/**
 	 * 任意2个字符的组合：
@@ -85,16 +114,14 @@ public class Pro_0010_regularExpressionMatching {
 						prev.addEdge(Edge.NULL_EDGE, e);
 						validStates.add(s);
 						prev = e;
+						i += 2;
 					}else {
-						State s = new State(id++, 1);
+						State s = new State(id++, DEF_EDGE_NUM);
 						prev.addEdge(first, s);
-						State e = new State(id++, DEF_EDGE_NUM);
-						s.addEdge(second, e);
 						validStates.add(s);
-						validStates.add(e);
-						prev = e;
+						prev = s;
+						i += 1;
 					}
-					i += 2;
 				}else {
 					State s = new State(id++, 1);
 					prev.addEdge(first, s);
