@@ -3,7 +3,7 @@ package com.lee.leetcode;
 public class Pro_0014_longestCommonPrefix {
 
 	public static void main(String[] args) {
-		String[] strs = new String[] {"a"};
+		String[] strs = new String[] {"a", "b"};
 		System.out.println(longestCommonPrefix(strs));
 	}
 	
@@ -15,11 +15,13 @@ public class Pro_0014_longestCommonPrefix {
         }else {
         	if(strs.length == 1) { return strs[0]; }
         	for(String str : strs) {
-        		if(str.length() < mLen) { minStr = str; }
+        		if(str.length() < mLen) {
+        			mLen = str.length();
+					minStr = str;
+				}
         	}
-        	mLen = minStr.length();
         }
-        if(mLen == 0) { return ""; }
+         if(mLen == 0) { return ""; }
         
         int i = 0;
         boolean match = true;
@@ -27,8 +29,7 @@ public class Pro_0014_longestCommonPrefix {
         	char ch = minStr.charAt(i);
         	for(String str : strs) {
         		if(str.charAt(i) != ch) {
-        			match = false;
-        			break;
+        			return minStr.substring(0, i);
         		}
         	}
         }
