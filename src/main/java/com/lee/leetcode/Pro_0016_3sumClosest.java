@@ -1,5 +1,7 @@
 package com.lee.leetcode;
 
+import java.util.Arrays;
+
 public class Pro_0016_3sumClosest {
 
 	public static void main(String[] args) {
@@ -10,7 +12,31 @@ public class Pro_0016_3sumClosest {
 	}
 
 	public static int threeSumClosest1(int[] nums, int target) {
+		int sum = nums[0] + nums[1] + nums[2];
+		Arrays.sort(nums);
 		
+		int delta = Math.abs(sum - target);
+		int end = nums.length - 2;
+		for(int i=0; i<end; i++) {
+			int first = nums[i];
+			int tSum = 0, tDelta = 0;
+			int left =i+1, right=nums.length-1;
+			while(left<right) {
+				tSum = first + nums[left] + nums[right];
+				if(tSum < target) {
+					left++;
+					tDelta = target - tSum;
+				}else {
+					right--;
+					tDelta = tSum - target;
+				}
+				if(tDelta < delta) {
+					delta = tDelta;
+					sum = tSum;
+				}
+			}
+		}
+		return sum;
 	}
 	
 	public static int threeSumClosest(int[] nums, int target) {
