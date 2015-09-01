@@ -1,4 +1,4 @@
-package com.lee.leetcode;
+package com.lee.leetcode.pro0001_0025;
 
 import java.util.Arrays;
 
