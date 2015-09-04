@@ -7,14 +7,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
 
 public class Pro_0030_substringWithConcatenationOfAllWords {
 
 	public static void main(String[] args) {
-		String s = "barfoothefoobarman";
-		String[] words = {"foo", "bar"};
+		String s = "abababbabaabbaabba";
+		String[] words = {"ba", "ba", "ab"};
 		System.out.println(findSubstring(s, words));
 		System.out.println(findSubstring1(s, words));
 	}
@@ -46,12 +45,10 @@ public class Pro_0030_substringWithConcatenationOfAllWords {
         }
         
         List<Integer> list = new ArrayList<Integer>();
-        Map<String, Count> wordCnt = preProcess(words);
-        Map<String, Count> wordMap = new HashMap<String, Count>(wordCnt.size(), 1);
+        Map<String, Count> wordMap = preProcess(words);
+        Queue<Element> queue = new LinkedList<Element>();
         int max = Math.min(wLen, sLen-wsLen+1);
         for(int i=0; i<max; i++) {
-        	Queue<Element> queue = new LinkedList<Element>();
-        	initCnt(wordCnt, wordMap);
         	int begin = i, reservedLen = count*wLen;
         	while(reservedLen+begin <= sLen) {
         		String w = s.substring(begin, begin+wLen);
@@ -82,6 +79,11 @@ public class Pro_0030_substringWithConcatenationOfAllWords {
         			begin += wLen;
         		}
         	}
+        	
+        	Element e = null;
+        	while((e = queue.poll()) != null) {
+        		wordMap.get(e.word).count++;
+        	}
         }
         return list;
 	}
@@ -106,18 +108,6 @@ public class Pro_0030_substringWithConcatenationOfAllWords {
 			cnt.increment();
 		}
 		return wordMap;
-	}
-	
-	private static void initCnt(Map<String, Count> wordCnt, Map<String, Count> wordMap) {
-		for(Entry<String, Count> entry : wordCnt.entrySet()) {
-			Count cnt = wordMap.get(entry.getKey());
-			if(cnt == null) {
-				cnt = new Count(entry.getValue().count);
-				wordMap.put(entry.getKey(), cnt);
-			}else {
-				cnt.count = entry.getValue().count;
-			}
-		}
 	}
 	
 	private static final class Count {
