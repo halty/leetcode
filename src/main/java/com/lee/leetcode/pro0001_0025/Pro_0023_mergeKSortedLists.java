@@ -1,5 +1,10 @@
 package com.lee.leetcode.pro0001_0025;
 
+/*
+ * 
+Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+ * 
+ */
 public class Pro_0023_mergeKSortedLists {
 
 	public static void main(String[] args) {

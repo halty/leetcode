@@ -1,5 +1,10 @@
 package com.lee.leetcode.pro0001_0025;
 
+/*
+ * 
+Write a function to find the longest common prefix string amongst an array of strings.
+ * 
+ */
 public class Pro_0014_longestCommonPrefix {
 
 	public static void main(String[] args) {

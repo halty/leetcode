@@ -1,5 +1,12 @@
 package com.lee.leetcode.pro0026_0050;
 
+/*
+ * 
+Divide two integers without using multiplication, division and mod operator.
+
+If it is overflow, return MAX_INT.
+ * 
+ */
 public class Pro_0029_divideTwoIntegers {
 
 	public static void main(String[] args) {
