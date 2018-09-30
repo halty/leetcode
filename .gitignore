@@ -1,10 +1,12 @@
 .settings
 .project
+.DS_Store
 target
 **/.settings
 **/.classpath
 **/.eclipse
 **/.project
+**/.DS_Store
 **/target
 **/**/target
 **/bin
