@@ -1,6 +1,7 @@
 package com.lee.leetcode.pro0076_0100;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -23,10 +24,8 @@ public class Pro_0085_MaximalRectangle {
 
     public static void main(String[] args) {
         char[][] matrix = {
-                {'1','0','1','0','0'},
-                {'1','0','1','1','1'},
-                {'1','1','1','1','1'},
-                {'1','0','0','1','0'}
+                {'0','1'},
+                {'1','0'}
         };
 //        int result = maximalRectangle1(matrix);
         int result = maximalRectangle2(matrix);
@@ -71,21 +70,35 @@ public class Pro_0085_MaximalRectangle {
         return totalSMax;
     }
 
+    // 时间复杂度：O(m*n)，空间复杂度：最大O(m*n)，最小O(m)
     public static int maximalRectangle2(char[][] matrix) {
-
+        int rowCnt = matrix.length;
+        if(rowCnt == 0) { return 0; }
+        int colCnt = matrix[0].length;
+        if(colCnt == 0) { return 0; }
+        SeqBuffer[] sequentialOnes = findSequentialOnePerRow(matrix, rowCnt, colCnt);
+        List<int[]> histogramsByColumn = generateHistogramsByColumn(sequentialOnes, colCnt);
+        int[] index = new int[rowCnt];
+        int sMax = 0;
+        for(int[] histogram : histogramsByColumn) {
+            int s = largestRectangleAreaInHistogram(histogram, index);
+            if(sMax < s) {
+                sMax = s;
+            }
+        }
+        return sMax;
     }
 
     // 获取每行里面连续的'1'片段
-    private static List<Long>[] findSequentialOnePerRow(char[][] matrix, int rowCnt, int colCnt) {
-        List<Long>[] sequentialOnes = new List[rowCnt];
+    private static SeqBuffer[] findSequentialOnePerRow(char[][] matrix, int rowCnt, int colCnt) {
+        SeqBuffer[] sequentialOnes = new SeqBuffer[rowCnt];
         for(int i=0; i<rowCnt; i++) {
-            List<Long> list = new ArrayList<>();
+            SeqBuffer buffer = new SeqBuffer();
             int begin = -1;
             for(int j=0; j<colCnt; j++) {
                 if(matrix[i][j] == '0') {
                     if(begin != -1) {
-                        long s = composeOf(begin, j-begin);
-                        list.add(s);
+                        buffer.add(new Seq(begin, j-begin));
                         begin = -1;
                     }
                 }else { // == '1'
@@ -95,64 +108,159 @@ public class Pro_0085_MaximalRectangle {
                 }
             }
             if(begin != -1) {
-                long s = composeOf(begin, colCnt-begin);
-                list.add(s);
+                buffer.add(new Seq(begin, colCnt-begin));
             }
-            sequentialOnes[i] = list;
+            sequentialOnes[i] = buffer;
         }
         return sequentialOnes;
     }
 
     // 以row增长方向为x轴，以column增长方向为Y轴，生成多个直方图(直方图的矩形个数等于矩阵的行数)
     // 所有直方图中最大面积的矩形即为矩阵中全'1'构成的最大矩形
-    private static int[][] generateHistogramByColumn(List<Long> sequentialOnes) {
-
+    private static List<int[]> generateHistogramsByColumn(SeqBuffer[] sequentialOnes, int colCnt) {
+        int rowCnt = sequentialOnes.length;
+        int colMin = -1;
+        List<int[]> histograms = new ArrayList<>(colCnt);
+        while(true) {
+            int j = Integer.MAX_VALUE;
+            for(int i=0; i<rowCnt; i++) {
+                int begin = greaterThanColMin(sequentialOnes[i], colMin);
+                if(j > begin) {
+                    j = begin;
+                }
+            }
+            if(j == Integer.MAX_VALUE) {
+                break;
+            }
+            int[] histogram = new int[rowCnt];
+            for(int i=0; i<rowCnt; i++) {
+                Seq seq = removeAndGetFirst(sequentialOnes[i], j);
+                if(seq == null) {
+                    histogram[i] = 0;
+                }else {
+                    if(seq.begin <= j) {
+                        histogram[i] = seq.begin + seq.length - j;
+                    }else {
+                        histogram[i] = 0;
+                    }
+                }
+            }
+            histograms.add(histogram);
+            colMin = j;
+        }
+        return histograms;
     }
 
-    private static int largestRectangleAreaInHistogram(int[] rows) {
-
+    private static int greaterThanColMin(SeqBuffer seqBuffer, int colMin) {
+        for(int i=0; i<seqBuffer.size; i++) {
+            int begin = seqBuffer.buf[i].begin;
+            if(begin > colMin) {
+                return begin;
+            }
+        }
+        return Integer.MAX_VALUE;
     }
 
-    private static long composeOf(int begin, int length) {
-        long v = length;
-        v = (v << 32) + begin;
-        return v;
+    private static Seq removeAndGetFirst(SeqBuffer seqBuffer, int j) {
+        int i = 0;
+        while(i < seqBuffer.size) {
+            Seq seq = seqBuffer.buf[i];
+            if(seq.begin+seq.length > j) {
+                break;
+            }
+            i++;
+        }
+        seqBuffer.sub(i);
+        return seqBuffer.size == 0 ? null : seqBuffer.buf[0];
     }
 
-    private static int decomposeBegin(long v) {
-        return (int) v;
+    private static int largestRectangleAreaInHistogram(int[] histogram, int[] index) {
+        int len = histogram.length;
+        int sMax = 0;
+        int top = 0;
+        index[top] = 0;
+        for(int i=1; i<len; i++) {
+            int h = histogram[index[top]];
+            int hi = histogram[i];
+            if(hi > h) {
+                index[++top] = i;
+            }else if(hi < h) {
+                int right = i;
+                int s;
+                do {
+                    if (top > 0) {
+                        int left = index[top-1]+1;
+                        s = h * (right - left);
+                    } else {
+                        s = h * right;
+                    }
+                    if(sMax < s) {
+                        sMax = s;
+                    }
+                    --top;
+                }while(top >= 0 && (h = histogram[index[top]]) > hi);
+                if(top < 0) {
+                    index[++top] = i;
+                }else {
+                    if(h < hi) {
+                        index[++top] = i;
+                    }else {
+                        index[top] = i;
+                    }
+                }
+            }else {
+                index[top] = i;
+            }
+        }
+        int right = len;
+        int s;
+        do {
+            int h = histogram[index[top]];
+            if (top > 0) {
+                int left = index[top-1]+1;
+                s = h * (right - left);
+            } else {
+                s = h * right;
+            }
+            if(sMax < s) {
+                sMax = s;
+            }
+            --top;
+        }while(top >= 0);
+        return sMax;
     }
 
-    private static int decomposeLength(long v) {
-        return (int) (v >>> 32);
+    private static class Seq {
+        int begin;
+        int length;
+        Seq(int begin, int length) {
+            this.begin = begin;
+            this.length = length;
+        }
     }
 
+    private static class SeqBuffer {
+        Seq[] buf;
+        int size;
+        SeqBuffer() {
+            buf = new Seq[16];
+            size = 0;
+        }
+        void add(Seq seq) {
+            if(size == buf.length) {
+                buf = Arrays.copyOf(buf, buf.length * 3 / 2);
+            }
+            buf[size++] = seq;
+        }
+        void sub(int beginIndex) {
+            if(beginIndex >= size) {
+                size = 0;
+            }else if(beginIndex <= 0) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            }else {
+                size -= beginIndex;
+                System.arraycopy(buf, beginIndex, buf, 0, size);
+            }
+        }
+    }
 }
