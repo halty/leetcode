@@ -1,5 +1,7 @@
 package com.lee.leetcode.pro0001_0025;
 
+import com.lee.leetcode.common.ListNode;
+
 /*
  * 
 Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
@@ -19,7 +21,7 @@ public class Pro_0023_mergeKSortedLists {
 		};
 		ListNode[] list = build(array);
 		print(list);
-		print(mergeKLists1(list));
+		ListNode.print(mergeKLists1(list));
 	}
 	
 	public static ListNode mergeKLists1(ListNode[] lists) {
@@ -178,45 +180,14 @@ public class Pro_0023_mergeKSortedLists {
 	private static ListNode[] build(int[][] array) {
 		ListNode[] list = new ListNode[array.length];
 		for(int i=0; i<array.length; i++) {
-			list[i] = build(array[i]);
+			list[i] = ListNode.build(array[i]);
 		}
 		return list;
 	}
 	
-	private static ListNode build(int[] array) {
-		if(array == null || array.length == 0) { return null; }
-		ListNode head = new ListNode(array[0]);
-		ListNode prev = head;
-		for(int i=1; i<array.length; i++) {
-			ListNode node = new ListNode(array[i]);
-			prev.next = node;
-			prev = node;
-		}
-		return head;
-	}
-	
 	private static void print(ListNode[] list) {
 		for(ListNode n : list) {
-			print(n);
+			ListNode.print(n);
 		}
-	}
-	
-	private static void print(ListNode head) {
-		StringBuilder buf = new StringBuilder();
-		if(head != null) {
-			buf.append(head.val);
-			head = head.next;
-		}
-		while(head != null) {
-			buf.append(" -> ").append(head.val);
-			head = head.next;
-		}
-		System.out.println(buf.toString());
-	}
-	
-	public static class ListNode {
-		int val;
-		ListNode next;
-		ListNode(int x) { val = x; }
 	}
 }

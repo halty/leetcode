@@ -1,5 +1,7 @@
 package com.lee.leetcode.pro0001_0025;
 
+import com.lee.leetcode.common.ListNode;
+
 /*
  * 
 Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
@@ -37,10 +39,4 @@ public class Pro_0021_mergeTwoSortedLists {
         prev.next = (l1 == null ? l2 : l1);
         return head;
     }
-	
-	public static class ListNode {
-		int val;
-		ListNode next;
-		ListNode(int x) { val = x; }
-	}
 }

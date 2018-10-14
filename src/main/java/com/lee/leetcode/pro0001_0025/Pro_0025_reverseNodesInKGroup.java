@@ -1,5 +1,7 @@
 package com.lee.leetcode.pro0001_0025;
 
+import com.lee.leetcode.common.ListNode;
+
 /*
  * 
 Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
@@ -23,10 +25,10 @@ public class Pro_0025_reverseNodesInKGroup {
 	public static void main(String[] args) {
 		int[] array = {1,2,3,4,5};
 		int k = 1;
-		ListNode head = build(array);
-		print(head);
+		ListNode head = ListNode.build(array);
+		ListNode.print(head);
 		head = reverseKGroup(head, k);
-		print(head);
+		ListNode.print(head);
 	}
 
 	public static ListNode reverseKGroup(ListNode head, int k) {
@@ -67,35 +69,4 @@ public class Pro_0025_reverseNodesInKGroup {
         }
         return newHead.next;
     }
-	
-	private static ListNode build(int[] array) {
-		if(array == null || array.length == 0) { return null; }
-		ListNode head = new ListNode(array[0]);
-		ListNode prev = head;
-		for(int i=1; i<array.length; i++) {
-			ListNode node = new ListNode(array[i]);
-			prev.next = node;
-			prev = node;
-		}
-		return head;
-	}
-	
-	private static void print(ListNode head) {
-		StringBuilder buf = new StringBuilder();
-		if(head != null) {
-			buf.append(head.val);
-			head = head.next;
-		}
-		while(head != null) {
-			buf.append(" -> ").append(head.val);
-			head = head.next;
-		}
-		System.out.println(buf.toString());
-	}
-	
-	public static class ListNode {
-		int val;
-		ListNode next;
-		ListNode(int x) { val = x; }
-	}
 }

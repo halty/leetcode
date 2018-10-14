@@ -1,5 +1,7 @@
 package com.lee.leetcode.pro0051_0075;
 
+import com.lee.leetcode.common.ListNode;
+
 /*
  *
 Given a linked list, rotate the list to the right by k places, where k is non-negative.
@@ -24,19 +26,13 @@ rotate 4 steps to the right: 2->0->1->NULL
  */
 public class Pro_0061_RotateList {
 
-    public static class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) { val = x; }
-    }
-
     public static void main(String[] args) {
         int[] array = {1,2,3,4,5};
         int k = 2;
-        ListNode head = build(array);
-        print(head);
+        ListNode head = ListNode.build(array);
+        ListNode.print(head);
         ListNode list = rotateRight(head, k);
-        print(list);
+        ListNode.print(list);
     }
 
     public static ListNode rotateRight(ListNode head, int k) {
@@ -65,27 +61,5 @@ public class Pro_0061_RotateList {
         }
         prev.next = null;
         return p;
-    }
-
-    private static ListNode build(int[] array) {
-        int length = array == null ? 0 : array.length;
-        if(length == 0) {
-            return null;
-        }
-        ListNode head = new ListNode(array[0]);
-        ListNode p = head;
-        for(int i=1; i<array.length; i++) {
-            ListNode node = new ListNode(array[i]);
-            p = p.next = node;
-        }
-        return head;
-    }
-
-    private static void print(ListNode list) {
-        while(list != null) {
-            System.out.print(list.val + "->");
-            list = list.next;
-        }
-        System.out.println("NULL");
     }
 }

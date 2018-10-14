@@ -1,5 +1,7 @@
 package com.lee.leetcode.pro0001_0025;
 
+import com.lee.leetcode.common.ListNode;
+
 /*
  * 
 Given a linked list, swap every two adjacent nodes and return its head.
@@ -14,9 +16,9 @@ public class Pro_0024_swapNodesInPairs {
 
 	public static void main(String[] args) {
 		int[] array = {1,2,3,4,5};
-		ListNode head = build(array);
-		print(head);
-		print(swapPairs(head));
+		ListNode head = ListNode.build(array);
+		ListNode.print(head);
+		ListNode.print(swapPairs(head));
 	}
 
 	public static ListNode swapPairs(ListNode head) {
@@ -42,34 +44,4 @@ public class Pro_0024_swapNodesInPairs {
         }
         return head;
     }
-	
-	private static ListNode build(int[] array) {
-		ListNode head = new ListNode(array[0]);
-		ListNode prev = head;
-		for(int i=1; i<array.length; i++) {
-			ListNode node = new ListNode(array[i]);
-			prev.next = node;
-			prev = node;
-		}
-		return head;
-	}
-	
-	private static void print(ListNode head) {
-		StringBuilder buf = new StringBuilder();
-		if(head != null) {
-			buf.append(head.val);
-			head = head.next;
-		}
-		while(head != null) {
-			buf.append(" -> ").append(head.val);
-			head = head.next;
-		}
-		System.out.println(buf.toString());
-	}
-	
-	public static class ListNode {
-		int val;
-		ListNode next;
-		ListNode(int x) { val = x; }
-	}
 }

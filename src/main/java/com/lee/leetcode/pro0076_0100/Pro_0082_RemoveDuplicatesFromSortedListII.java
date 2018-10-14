@@ -1,5 +1,7 @@
 package com.lee.leetcode.pro0076_0100;
 
+import com.lee.leetcode.common.ListNode;
+
 /*
  *
 Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
@@ -17,10 +19,10 @@ public class Pro_0082_RemoveDuplicatesFromSortedListII {
 
     public static void main(String[] args) {
         int[] nums = {1};
-        ListNode head = build(nums);
-        print(head);
+        ListNode head = ListNode.build(nums);
+        ListNode.print(head);
         ListNode result = deleteDuplicates(head);
-        print(result);
+        ListNode.print(result);
     }
 
     public static ListNode deleteDuplicates(ListNode head) {
@@ -54,38 +56,5 @@ public class Pro_0082_RemoveDuplicatesFromSortedListII {
             }
         }
         return head;
-    }
-
-    private static ListNode build(int[] array) {
-        ListNode head = null, prev = null;
-        if(array.length == 0) {
-            return head;
-        }
-        head = prev = new ListNode(array[0]);
-        for(int i=1; i<array.length; i++) {
-            ListNode node = new ListNode(array[i]);
-            prev.next = node;
-            prev = node;
-        }
-        return head;
-    }
-
-    private static void print(ListNode head) {
-        if(head != null) {
-            System.out.print(head.val);
-            ListNode current = head;
-            while((current = current.next) != null) {
-                System.out.print("->" + current.val);
-            }
-        }
-        System.out.println();
-    }
-
-    public static class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int val) {
-            this.val = val;
-        }
     }
 }
