@@ -2,7 +2,7 @@ package com.lee.leetcode.pro0076_0100;
 
 import java.util.Arrays;
 
-/*
+/**
  *
 Given a sorted array nums, remove the duplicates in-place such that duplicates appeared at most twice and return the new length.
 

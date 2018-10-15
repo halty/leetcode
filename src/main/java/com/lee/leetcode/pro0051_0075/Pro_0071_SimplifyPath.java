@@ -3,7 +3,7 @@ package com.lee.leetcode.pro0051_0075;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
  *
 Given an absolute path for a file (Unix-style), simplify it.
 

@@ -2,7 +2,7 @@ package com.lee.leetcode.pro0076_0100;
 
 import com.lee.leetcode.common.ListNode;
 
-/*
+/**
  *
 Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
 

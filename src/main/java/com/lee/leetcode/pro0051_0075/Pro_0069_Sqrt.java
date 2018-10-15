@@ -1,6 +1,6 @@
 package com.lee.leetcode.pro0051_0075;
 
-/*
+/**
  *
 Implement int sqrt(int x).
 

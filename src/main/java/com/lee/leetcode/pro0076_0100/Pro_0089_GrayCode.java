@@ -3,7 +3,7 @@ package com.lee.leetcode.pro0076_0100;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
  *
 The gray code is a binary numeral system where two successive values differ in only one bit.
 

@@ -1,6 +1,6 @@
 package com.lee.leetcode.pro0026_0050;
 
-/*
+/**
  * 
 Suppose a sorted array is rotated at some pivot unknown to you beforehand.
 

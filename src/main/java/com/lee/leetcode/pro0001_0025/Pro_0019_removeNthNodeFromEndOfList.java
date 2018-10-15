@@ -2,7 +2,7 @@ package com.lee.leetcode.pro0001_0025;
 
 import com.lee.leetcode.common.ListNode;
 
-/*
+/**
  * 
 Given a linked list, remove the nth node from the end of list and return its head.
 

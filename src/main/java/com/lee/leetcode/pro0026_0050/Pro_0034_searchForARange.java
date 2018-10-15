@@ -2,7 +2,7 @@ package com.lee.leetcode.pro0026_0050;
 
 import java.util.Arrays;
 
-/*
+/**
  * 
 Given a sorted array of integers, find the starting and ending position of a given target value.
 

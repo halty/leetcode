@@ -1,5 +1,6 @@
 package com.lee.leetcode.common;
 
+/** common Linked Node **/
 public class ListNode {
     public int val;
     public ListNode next;

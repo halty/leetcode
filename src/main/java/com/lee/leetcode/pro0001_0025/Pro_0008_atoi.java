@@ -1,6 +1,6 @@
 package com.lee.leetcode.pro0001_0025;
 
-/*
+/**
  * 
 Implement atoi to convert a string to an integer.
 

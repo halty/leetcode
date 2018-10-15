@@ -2,7 +2,7 @@ package com.lee.leetcode.pro0001_0025;
 
 import java.util.Arrays;
 
-/*
+/**
  * 
 Given an array of integers, find two numbers such that they add up to a specific target number.
 

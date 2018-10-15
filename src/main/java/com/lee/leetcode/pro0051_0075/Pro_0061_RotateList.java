@@ -2,7 +2,7 @@ package com.lee.leetcode.pro0051_0075;
 
 import com.lee.leetcode.common.ListNode;
 
-/*
+/**
  *
 Given a linked list, rotate the list to the right by k places, where k is non-negative.
 

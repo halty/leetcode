@@ -1,6 +1,6 @@
 package com.lee.leetcode.pro0076_0100;
 
-/*
+/**
  *
 Given a string s1, we may represent it as a binary tree by partitioning it to two non-empty substrings recursively.
 
@@ -59,6 +59,6 @@ public class Pro_0087_ScrambleString {
     }
 
     public static boolean isScramble(String s1, String s2) {
-
+        return false;
     }
 }

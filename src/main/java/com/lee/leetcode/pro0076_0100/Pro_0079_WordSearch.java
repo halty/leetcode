@@ -1,6 +1,6 @@
 package com.lee.leetcode.pro0076_0100;
 
-/*
+/**
  *
 Given a 2D board and a word, find if the word exists in the grid.
 

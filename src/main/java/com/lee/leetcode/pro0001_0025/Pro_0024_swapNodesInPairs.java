@@ -2,7 +2,7 @@ package com.lee.leetcode.pro0001_0025;
 
 import com.lee.leetcode.common.ListNode;
 
-/*
+/**
  * 
 Given a linked list, swap every two adjacent nodes and return its head.
 

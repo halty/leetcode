@@ -1,6 +1,6 @@
 package com.lee.leetcode.pro0051_0075;
 
-/*
+/**
  *
 Given two binary strings, return their sum (also a binary string).
 

@@ -2,7 +2,7 @@ package com.lee.leetcode.pro0026_0050;
 
 import java.util.Arrays;
 
-/*
+/**
  * 
 Given an array and a value, remove all instances of that value in place and return the new length.
 

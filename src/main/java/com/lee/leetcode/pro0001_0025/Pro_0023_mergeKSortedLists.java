@@ -2,7 +2,7 @@ package com.lee.leetcode.pro0001_0025;
 
 import com.lee.leetcode.common.ListNode;
 
-/*
+/**
  * 
 Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
  * 

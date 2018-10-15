@@ -2,7 +2,7 @@ package com.lee.leetcode.pro0076_0100;
 
 import com.lee.leetcode.common.ListNode;
 
-/*
+/**
  *
 Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
 

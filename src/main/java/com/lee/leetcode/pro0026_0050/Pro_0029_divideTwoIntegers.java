@@ -1,6 +1,6 @@
 package com.lee.leetcode.pro0026_0050;
 
-/*
+/**
  * 
 Divide two integers without using multiplication, division and mod operator.
 

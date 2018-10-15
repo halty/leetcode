@@ -3,7 +3,7 @@ package com.lee.leetcode.pro0001_0025;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
  * 
 Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
 

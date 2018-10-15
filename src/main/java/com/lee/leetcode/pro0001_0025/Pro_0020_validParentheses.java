@@ -1,6 +1,6 @@
 package com.lee.leetcode.pro0001_0025;
 
-/*
+/**
  * 
 Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
 

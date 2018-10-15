@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/*
+/**
  *
 Given a set of distinct integers, nums, return all possible subsets (the power set).
 

@@ -1,6 +1,6 @@
 package com.lee.leetcode.pro0051_0075;
 
-/*
+/**
  *
 A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
 

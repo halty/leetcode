@@ -2,7 +2,7 @@ package com.lee.leetcode.pro0076_0100;
 
 import com.lee.leetcode.common.ListNode;
 
-/*
+/**
  *
 Given a sorted linked list, delete all duplicates such that each element appear only once.
 
