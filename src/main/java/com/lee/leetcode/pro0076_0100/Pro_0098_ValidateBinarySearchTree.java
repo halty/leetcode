@@ -41,7 +41,8 @@ public class Pro_0098_ValidateBinarySearchTree {
         TreeNode root = TreeNode.levelOrderBuild(array);
         TreeNode.preOrderPrint(root);
 //        boolean result = isValidBST1(root);
-        boolean result = isValidBST2(root);
+//        boolean result = isValidBST2(root);
+        boolean result = isValidBST3(root);
         System.out.println(result);
     }
 
@@ -151,5 +152,32 @@ public class Pro_0098_ValidateBinarySearchTree {
             this.parent = parent;
             this.isLeftSubtree = isLeftSubtree;
         }
+    }
+
+    public static boolean isValidBST3(TreeNode root) {
+        Judge judge = new Judge();
+        inOrderJudgeRecursively(root, judge);
+        return judge.isValid;
+    }
+
+    private static void inOrderJudgeRecursively(TreeNode root, Judge judge) {
+        if(root == null) { return; }
+        inOrderJudgeRecursively(root.left, judge);
+        if(!judge.isValid) { return; }
+        if(judge.prev == null) {
+            judge.prev = root;
+        }else {
+            if(!(judge.isValid = judge.prev.val < root.val)) {
+                return;
+            }else {
+                judge.prev = root;
+            }
+        }
+        inOrderJudgeRecursively(root.right, judge);
+    }
+
+    private static class Judge {
+        boolean isValid = true;
+        TreeNode prev = null;
     }
 }

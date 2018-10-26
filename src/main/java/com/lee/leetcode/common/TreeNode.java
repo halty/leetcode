@@ -16,6 +16,10 @@ public class TreeNode {
     public static void preOrderPrint(TreeNode root) {
         List<Integer> list = new ArrayList<>();
         preOrderCollect(root, list);
+        printListAndIgnorTailNull(list);
+    }
+
+    private static void printListAndIgnorTailNull(List<Integer> list) {
         int end = list.size() - 1;
         while(end >= 0) {
             if(list.get(end) != null) {
@@ -40,6 +44,36 @@ public class TreeNode {
         list.add(root.val);
         preOrderCollect(root.left, list);
         preOrderCollect(root.right, list);
+    }
+
+    public static void levelOrderPrint(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        levelOrderCollect(root, list);
+        printListAndIgnorTailNull(list);
+    }
+
+    private static void levelOrderCollect(TreeNode root, List<Integer> list) {
+        if(root == null) { return; }
+        Queue<TreeNode> q = new ArrayDeque<>();
+        q.offer(root);
+        list.add(root.val);
+        while(!q.isEmpty()) {
+            TreeNode r = q.poll();
+            TreeNode left = r.left;
+            if(left != null) {
+                q.offer(left);
+                list.add(left.val);
+            }else {
+                list.add(null);
+            }
+            TreeNode right = r.right;
+            if(right != null) {
+                q.offer(right);
+                list.add(right.val);
+            }else {
+                list.add(null);
+            }
+        }
     }
 
     public static TreeNode preOrderBuild(Integer[] array) {
