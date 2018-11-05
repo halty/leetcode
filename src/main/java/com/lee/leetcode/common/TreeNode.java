@@ -16,10 +16,10 @@ public class TreeNode {
     public static void preOrderPrint(TreeNode root) {
         List<Integer> list = new ArrayList<>();
         preOrderCollect(root, list);
-        printListAndIgnorTailNull(list);
+        printListAndIgnoreTailNull(list);
     }
 
-    private static void printListAndIgnorTailNull(List<Integer> list) {
+    private static void printListAndIgnoreTailNull(List<Integer> list) {
         int end = list.size() - 1;
         while(end >= 0) {
             if(list.get(end) != null) {
@@ -49,7 +49,7 @@ public class TreeNode {
     public static void levelOrderPrint(TreeNode root) {
         List<Integer> list = new ArrayList<>();
         levelOrderCollect(root, list);
-        printListAndIgnorTailNull(list);
+        printListAndIgnoreTailNull(list);
     }
 
     private static void levelOrderCollect(TreeNode root, List<Integer> list) {
