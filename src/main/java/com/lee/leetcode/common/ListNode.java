@@ -24,6 +24,23 @@ public class ListNode {
         return head;
     }
 
+    /** pos(0-based) is target node index which tail connect to; pos = -1, no cycle **/
+    public static ListNode buildCycle(int[] array, int pos) {
+        int len = array.length;
+        if(len == 0) { return null; }
+        ListNode[] nodes = new ListNode[len];
+        for(int i=0; i<len; i++) {
+            nodes[i] = new ListNode(array[i]);
+        }
+        for(int i=1; i<len; i++) {
+            nodes[i-1].next = nodes[i];
+        }
+        if(pos != -1) {
+            nodes[len-1].next = nodes[pos];
+        }
+        return nodes[0];
+    }
+
     public static void print(ListNode head) {
         if(head != null) {
             System.out.print(head.val);

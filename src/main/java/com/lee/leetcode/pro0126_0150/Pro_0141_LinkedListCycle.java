@@ -32,23 +32,10 @@ public class Pro_0141_LinkedListCycle {
     public static void main(String[] args) {
         int[] array = {3,2,0,-4};
         int pos = -1;
-        ListNode head = buildCycleList(array, pos);
+        ListNode head = ListNode.buildCycle(array, pos);
 //        boolean result = hasCycle(head);
         boolean result = hasCycle1(head);
         System.out.println(result);
-    }
-
-    private static ListNode buildCycleList(int[] array, int pos) {
-        ListNode head = ListNode.build(array);
-        if(pos == -1) { return head; }
-        ListNode target = null;
-        if(pos == 0) { target = head; }
-        ListNode prev = head, current;
-        for(int i=0; (current = prev.next) != null; prev = current) {
-            if(++i == pos) { target = current; }
-        }
-        prev.next = target;
-        return head;
     }
 
     public static boolean hasCycle(ListNode head) {
