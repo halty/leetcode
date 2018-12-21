@@ -24,7 +24,7 @@ public class ListNode {
         return head;
     }
 
-    /** pos(0-based) is target node index which tail connect to; pos = -1, no cycle **/
+    /** pos(0-based) is the target node index which tail connect to; pos = -1, no cycle **/
     public static ListNode buildCycle(int[] array, int pos) {
         int len = array.length;
         if(len == 0) { return null; }
@@ -39,6 +39,36 @@ public class ListNode {
             nodes[len-1].next = nodes[pos];
         }
         return nodes[0];
+    }
+
+    /**
+     * joinIndexA(0-based) is the intersection node index within list a, joinIndexB is the intersection node index within list b.
+     * no intersection node if joinIndexA == -1 or joinIndexB == -1
+     */
+    public static Pair<ListNode, ListNode> buildIntersection(int[] a, int joinIndexA, int[] b, int joinIndexB) {
+        if(joinIndexA == -1 || joinIndexB == -1) {
+            ListNode headA = build(a);
+            ListNode headB = build(b);
+            return Pair.of(headA, headB);
+        }else {
+            ListNode headA = null, prevA = null, intersection = null;
+            headA = prevA = new ListNode(a[0]);
+            for(int i=1; i<a.length; i++) {
+                ListNode node = new ListNode(a[i]);
+                if(i == joinIndexA) { intersection = node; }
+                prevA.next = node;
+                prevA = node;
+            }
+            ListNode headB = null, prevB = null;
+            headB = prevB = new ListNode(b[0]);
+            for(int i=1; i<joinIndexB; i++) {
+                ListNode node = new ListNode(b[i]);
+                prevB.next = node;
+                prevB = node;
+            }
+            prevB.next = intersection;
+            return Pair.of(headA, headB);
+        }
     }
 
     public static void print(ListNode head) {
