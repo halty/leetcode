@@ -76,6 +76,19 @@ public class TreeNode {
         }
     }
 
+    public static void inOrderPrint(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        inOrderCollect(root, list);
+        printListAndIgnoreTailNull(list);
+    }
+
+    private static void inOrderCollect(TreeNode root, List<Integer> list) {
+        if(root == null) { return; }
+        inOrderCollect(root.left, list);
+        list.add(root.val);
+        inOrderCollect(root.right, list);
+    }
+
     public static TreeNode preOrderBuild(Integer[] array) {
         return preOrderBuild(new Source(array));
     }
