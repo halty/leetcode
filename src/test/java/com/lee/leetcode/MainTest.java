@@ -1,17 +1,12 @@
 package com.lee.leetcode;
 
-import java.util.regex.Pattern;
+import java.util.Arrays;
 
 public class MainTest {
 
 	public static void main(String[] args) {
-		long r = Long.MAX_VALUE - 1000;
-		int x = Integer.MAX_VALUE;
-		boolean b = r > x;
-		 System.out.println(x);
+		int[] array = new int[0];
+		Arrays.sort(array);
+		System.out.println("done");
 	}
-
-	public static boolean isMatch(String s, String p) {
-        return Pattern.matches(p, s);
-    }
 }
