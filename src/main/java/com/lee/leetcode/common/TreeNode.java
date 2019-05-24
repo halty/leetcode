@@ -137,4 +137,11 @@ public class TreeNode {
         }
         return root;
     }
+
+    public static TreeNode preOrderTraversal(TreeNode root, int val) {
+        if(root == null || root.val == val) { return root; }
+        TreeNode target = preOrderTraversal(root.left, val);
+        if(target != null) { return target; }
+        return preOrderTraversal(root.right, val);
+    }
 }
