@@ -26,11 +26,13 @@ package com.lee.leetcode.pro0301_0325;
 public class Pro_0326_PowerOfThree {
 
     public static void main(String[] args) {
-        int n = 27;
+        int n = 1;
         // n = 0;
+        // n = 3;
         // n = 9;
         // n = 45;
         // n = -10;
+        // n = 2147483647;
         System.out.println(isPowerOfThree2(n));
         /*long s = 3;
         while(s < Integer.MAX_VALUE) {
@@ -40,7 +42,7 @@ public class Pro_0326_PowerOfThree {
     }
 
     public static boolean isPowerOfThree(int n) {
-        int s = 3;
+        long s = 1;
         while (s < n) {
             s *= 3;
         }
@@ -63,6 +65,6 @@ public class Pro_0326_PowerOfThree {
 
     public static boolean isPowerOfThree2(int n) {
         // [3, 9, 27, 81, 243, 729, 2187, 6561, 19683, 59049, 177147, 531441, 1594323, 4782969, 14348907, 43046721, 129140163, 387420489, 1162261467]
-        return n >= 3 && 1162261467 % n == 0;
+        return (n > 1 && 1162261467 % n == 0) || n == 1;
     }
 }
